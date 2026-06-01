@@ -3,6 +3,7 @@ export const config = {
     specs: [
         './features/**/login.feature',
         './features/**/accountOverview.feature',
+        './features/**/transfer.feature'
     ],
     exclude: [],
     maxInstances: 10,
@@ -22,8 +23,10 @@ export const config = {
     reporters: ['spec'],
     cucumberOpts: {
         require: [
-            './features/step-definitions/steps.login.js',
-            './features/step-definitions/steps.accountOverview.js',
+            './features/step-definitions/Steps.login.js',
+            './features/step-definitions/Steps.accountoverview.js',
+            './features/step-definitions/Steps.transfer.js',
+            './features/support/hooks.js'
         ],
         backtrace: false,
         requireModule: [],

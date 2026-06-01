@@ -24,6 +24,10 @@ class LoginPage extends Page {
         await this.btnSubmit.click();
     }
 
+    async logout() {
+        await browser.url('https://parabank.parasoft.com/parabank/logout.htm');
+    }
+
     open() {
         return super.open('index');
     }

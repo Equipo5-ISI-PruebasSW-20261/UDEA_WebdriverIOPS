@@ -1,6 +1,6 @@
 import { Given, When, Then } from "@wdio/cucumber-framework";
 import LoginPage from '../pageobjects/login.page.js';
-import AccountOverviewPage from '../pageobjects/accountOverview.page.js';
+import AccountOverviewPage from '../pageobjects/Accountoverview.page.js';
 
 Given(/^I am logged in as "([^"]*)" with password "([^"]*)"$/, async (username, password) => {
     const url = await browser.getUrl();
