@@ -1,27 +1,5 @@
-import { Given, When, Then } from "@wdio/cucumber-framework";
-import LoginPage from "../pageobjects/login.page.js";
+import { When, Then } from "@wdio/cucumber-framework";
 import RequestLoanPage from "../pageobjects/RequestLoan.page.js";
-
-Given(
-  /^I am logged in as "([^"]*)" with password "([^"]*)"$/,
-  async (username, password) => {
-    const url = await browser.getUrl();
-    // Solo hace login si no hay sesión activa
-    if (
-      !url.includes("parabank") ||
-      url.includes("index") ||
-      url.includes("logout")
-    ) {
-      await LoginPage.open();
-      await LoginPage.login(username, password);
-    }
-    // Nos aseguramos de estar en el dashboard
-    await browser.waitUntil(
-      async () => (await browser.getUrl()).includes("overview.htm"),
-      { timeout: 10000, interval: 300 },
-    );
-  },
-);
 
 When(/^I navigate to the request loan page$/, async () => {
   await RequestLoanPage.navigateToRequestLoan();
@@ -35,8 +13,8 @@ When(/^I enter down payment "?([^"]*)"?$/, async (downPayment) => {
   await RequestLoanPage.enterDownPayment(downPayment);
 });
 
-When(/^I select the from account$/, async () => {
-  await RequestLoanPage.selectAccount();
+When(/^I select the from account "([^"]*)"$/, async (accountId) => {
+  await RequestLoanPage.selectAccount(accountId);
 });
 
 When(/^I click the apply now button$/, async () => {

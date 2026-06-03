@@ -9,7 +9,7 @@ Scenario: Solicitar préstamo con parámetros válidos
     When I navigate to the request loan page
     And I enter loan amount "100"
     And I enter down payment "50"
-    And I select the from account
+    And I select the from account "13122"
     And I click the apply now button
     Then I should see the loan approved message
     And the loan status should show "Approved"
@@ -20,7 +20,7 @@ Scenario: Solicitar préstamo con parámetros que resulten en rechazo
     When I navigate to the request loan page
     And I enter loan amount "10000"
     And I enter down payment "1"
-    And I select the from account
+    And I select the from account "12345"
     And I click the apply now button
     Then I should see the loan denied message
     And the loan status should show "Denied"

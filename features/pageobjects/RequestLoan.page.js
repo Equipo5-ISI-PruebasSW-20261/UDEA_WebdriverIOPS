@@ -6,7 +6,7 @@ class RequestLoanPage extends Page {
   }
 
   get inputLoanAmount() {
-    return $("#loanAmount");
+    return $("#amount");
   }
 
   get inputDownPayment() {
@@ -25,20 +25,16 @@ class RequestLoanPage extends Page {
     return $("#requestLoanResult");
   }
 
-  get loanErrorDiv() {
-    return $("#requestLoanError");
+  get loanApprovedDiv() {
+    return $("#loanRequestApproved");
   }
 
-  get loanStatus() {
-    return $("#requestLoanResult strong:nth-of-type(3)");
+  get loanDeniedDiv() {
+    return $("#loanRequestDenied");
   }
 
-  get loanProvider() {
-    return $("#requestLoanResult strong:first-of-type");
-  }
-
-  get errorMessage() {
-    return $("#requestLoanError");
+  get loanStatusCell() {
+    return $("td#loanStatus");
   }
 
   async enterLoanAmount(amount) {
@@ -53,9 +49,9 @@ class RequestLoanPage extends Page {
     await this.inputDownPayment.setValue(downPayment);
   }
 
-  async selectAccount() {
+  async selectAccount(accountId) {
     await this.selectFromAccount.waitForDisplayed({ timeout: 5000 });
-    await this.selectFromAccount.selectByIndex(0);
+    await this.selectFromAccount.selectByVisibleText(accountId);
   }
 
   async clickApplyNow() {
@@ -64,39 +60,35 @@ class RequestLoanPage extends Page {
   }
 
   async isLoanApproved() {
-    const resultDiv = await this.loanResultDiv;
-    return await resultDiv.isDisplayed();
+    await this.loanApprovedDiv.waitForExist({ timeout: 15000 });
+    return await this.loanApprovedDiv.isDisplayed();
   }
 
   async isLoanDenied() {
-    const errorDiv = await this.loanErrorDiv;
-    return await errorDiv.isDisplayed();
+    await this.loanDeniedDiv.waitForExist({ timeout: 15000 });
+    return await this.loanDeniedDiv.isDisplayed();
   }
 
   async getLoanStatus() {
-    await this.loanResultDiv.waitForExist({ timeout: 10000 });
-    // El HTML muestra: Status: Approved/Denied
-    // Buscamos el texto después de "Status:"
-    const resultText = await this.loanResultDiv.getText();
-    const statusMatch = resultText.match(/Status:\s*(\w+)/);
-    return statusMatch ? statusMatch[1] : null;
+    await this.loanStatusCell.waitForExist({ timeout: 15000 });
+    return await this.loanStatusCell.getText();
   }
 
   async getLoanProvider() {
     await this.loanResultDiv.waitForExist({ timeout: 10000 });
     const resultText = await this.loanResultDiv.getText();
     const providerMatch = resultText.match(/Loan Provider:\s*(.+)/);
-    return providerMatch ? providerMatch[1] : null;
+    return providerMatch ? providerMatch[1].trim() : null;
   }
 
   async getDenialReason() {
-    await this.loanErrorDiv.waitForExist({ timeout: 10000 });
-    return await this.loanErrorDiv.getText();
+    await this.loanDeniedDiv.waitForExist({ timeout: 15000 });
+    return await this.loanDeniedDiv.getText();
   }
 
   async navigateToRequestLoan() {
-    await this.linkRequestLoan.click();
-    await this.inputLoanAmount.waitForDisplayed({ timeout: 10000 });
+    await this.open();
+    await this.inputLoanAmount.waitForExist({ timeout: 15000 });
   }
 
   open() {
